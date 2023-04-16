@@ -1,0 +1,84 @@
+﻿@model List<BasketVM>
+@{
+    ViewData["Title"] = "Index";
+
+
+}
+
+<div class="container my-5">
+    @if (Model.Count>0)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Count</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Options</th>
+                </tr>
+            </thead>
+            <tbody class="tbody">
+                @foreach (var item in Model)
+                {
+                    <tr data-id="@item.Id">
+                        <td>
+                            <div class="img" style="width:150px; height:150px;">
+                                <img style="width:100%; height:100%;" src="~/img/@item.Product.Images.FirstOrDefault(p=>p.IsMain)?.Image" />
+                            </div>
+                        </td>
+                        <td>
+                            @item.Product.Name
+                        </td>
+                        <td>
+                            $@item.Product.Price
+                        </td>
+                        <td>
+                            @item.Count
+                        </td>
+                        <td>
+                            @{
+                                decimal total = (item.Count * item.Product.Price);
+                            }
+                            $@total
+                        </td>
+                        <td>
+                            <a  class="dlt-product" style="cursor:pointer;width:20px;height:20px;">
+                               <i class="fa-solid fa-trash"></i>
+                           </a>
+                        </td>
+                    </tr>
+
+                   
+                }
+            </tbody>
+        </table>
+
+      
+           
+            <div class="text-right">
+                <h1 class="total-price">
+                    @{
+                        decimal grandTotal = 0;
+                        @foreach (var item in Model)
+                        {
+                            grandTotal += (item.Count * item.Product.Price);
+                        }
+                    }
+                   Grand Total: $@grandTotal
+                </h1>
+              
+            </div>
+     
+
+    }else
+    {
+
+        <div class="alert alert-warning" role="alert">
+            Products not yet added.
+        </div>
+    }
+
+
+</div>
